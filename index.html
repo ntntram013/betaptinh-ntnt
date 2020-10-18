@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+	<title>Bé tập tính</title>
+</head>
+<body>
+	<section class="calculate">
+		<div class="container-md mt-5">
+			<h3 class="p-2">Bé tập tính</h3>
+			<form class="d-block ">
+				<div class="row d-flex align-items-center">
+					<div class="col-8 pl-4">
+						<div class="form-group row">
+    						<label id="number1-label" for="number1" class="col-xl-3 col-xs-4  col-form-label">Số thứ nhất</label>
+    						<div class="col-9">
+      							<input type="text" class="form-control" id="number1" >
+    						</div>
+  						</div>
+					</div>
+					<div class="col-2">
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="operatorRadios" id="addRadio" value="add">
+							<label class="form-check-label" for="addRadio">
+    							Cộng
+  							</label>
+						</div>
+					</div>
+					<div class="col-2">
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="operatorRadios" id="subRadio" value="sub">
+							<label class="form-check-label" for="subRadio">
+    							Trừ
+  							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="row d-flex align-items-center">
+					<div class="col-8 pl-4">
+						<div class="form-group row">
+    						<label id="number2-label" for="number2" class="col-xl-3 col-xs-4  col-form-label">Số thứ hai</label>
+    						<div class="col-9">
+      							<input type="text" class="form-control" id="number2" value="">
+    						</div>
+  						</div>
+					</div>
+					<div class="col-2">
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="operatorRadios" id="mulRadio" value="mul">
+							<label class="form-check-label" for="mulRadio">
+    							Nhân
+  							</label>
+						</div>
+					</div>
+					<div class="col-2">
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="operatorRadios" id="divRadio" value="div">
+							<label class="form-check-label" for="divRadio">
+    							Chia
+  							</label>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-8 pl-4">
+						<div class="form-group row">
+    						<label for="output1" class="col-xl-3 col-xs-4 col-form-label">Kết quả</label>
+    						<div class="col-9">
+      							<input type="text" readonly class="form-control" id="output1" value="">
+    						</div>
+  						</div>
+					</div>
+					<div class="col-4">
+						<button type="submit" class="btn btn-secondary" id="button-cal">Tính</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 pl-4">
+						<div class="form-group row">
+    						<label for="noti" class="col-xl-2 col-xs-12  col-form-label">Thông báo</label>
+    						<div class="col-xl-9 col-xs-12">
+      							<div id="noti"></div>
+    						</div>
+  						</div>
+					</div>
+				</div>	
+			
+			</form>
+
+		</div>
+	</section>
+	<script>
+		document.getElementById("number1").addEventListener("change", ErrorInput);
+		document.getElementById("number2").addEventListener("change", ErrorInput);
+		function ErrorInput()
+		{
+			let num1 = document.getElementById("number1");
+			let num2 = document.getElementById("number2");
+			let noti = document.getElementById("noti");
+			let notiTempt = "";
+			let check = false;
+			if(isNaN(num1.value))
+			{
+				notiTempt += "Giá trị nhập vào ở ô <i>Số thứ nhất</i> không phải là số <br>";
+				check = true;
+				
+			}
+			if(isNaN(num2.value))
+			{
+				notiTempt += "Giá trị nhập vào ở ô <i>Số thứ hai</i> không phải là số <br>";
+				check=true;
+			}
+			if(check=false)
+			{
+				noti.innerHTML = "";
+			}
+			else
+			{
+				noti.innerHTML = notiTempt;
+			}
+			return check;
+		};
+		
+	</script>
+	<script>
+		function GetOperator()
+		{
+			let operator = document.getElementsByName("operatorRadios");
+			for(i=0; i<operator.length; i++)
+			{
+				if(operator[i].checked)
+				{
+					return(operator[i].value);
+				}
+			}
+			return("none");
+		}
+	</script>
+	<script>
+		function CheckB4Calculate()
+		{
+
+			let opt = GetOperator();
+			let num1 = document.getElementById("number1");
+			let num2 = document.getElementById("number2");
+			let noti= document.getElementById("noti");
+			noti.innerHTML = "";
+			let notiTempt="";
+			let check = true;
+			if (num1.value.length == 0)
+			{
+				check = false;
+				notiTempt += "Giá trị ở ô Số thứ nhất rỗng <br>";
+			}
+			if (num2.value.length == 0)
+			{
+				check = false;
+				notiTempt += "Giá trị ở ô Số thứ hai rỗng <br>";
+			}
+			if(isNaN(num1.value) || isNaN(num2.value))
+			{
+				check = false;
+				ErrorInput();
+			}
+			if (opt == "none")
+			{
+				check = false;
+				notiTempt += "Chưa chọn phép tính";
+			}
+
+			if (check == false)
+			{
+				noti.innerHTML = noti.innerHTML + notiTempt;
+				
+			}
+			else
+			{
+				noti.innerHTML = "";
+			}
+			
+			return check;
+		}
+	</script>
+	<script>
+		document.getElementById("button-cal").addEventListener("click", function(event){
+  			event.preventDefault()
+		});
+		document.getElementById("button-cal").addEventListener("click", Calculate);
+		function Calculate()
+		{
+			document.getElementById("output1").value = "";
+			if(CheckB4Calculate()==true)
+			{
+				let opt = GetOperator();
+				let result = 0;
+				let num1 = parseFloat(document.getElementById("number1").value);
+				let num2 = parseFloat(document.getElementById("number2").value);
+				if (opt == "add")
+				{
+					result = num1 + num2;
+				}
+				else if(opt == "sub")
+				{
+					result = num1 - num2;
+				}
+				else if(opt == "mul")
+				{
+					result = num1 * num2;
+				}
+				else if(opt == "div")
+				{
+					if (num2 == 0)
+					{
+						document.getElementById("noti").innerHTML = "Số bị chia phải khác 0";
+						return;
+					}
+					result = num1 / num2;
+				}
+				document.getElementById("output1").value = result;
+			
+			}
+		}
+
+	</script>
+	
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+	<script>
+ 	 // Your web app's Firebase configuration
+  	var firebaseConfig = {
+   	 apiKey: "AIzaSyBnVNQ72--_p7dkHs-IfTvBIsTh3IQkshM",
+   	 authDomain: "betaptinh-ntnt.firebaseapp.com",
+  	 atabaseURL: "https://betaptinh-ntnt.firebaseio.com",
+   	 projectId: "betaptinh-ntnt",
+   	 storageBucket: "betaptinh-ntnt.appspot.com",
+   	 messagingSenderId: "688569046753",
+   	 appId: "1:688569046753:web:5a19516f2fad7426d5c9a0"
+  	};
+  	// Initialize Firebase
+  	firebase.initializeApp(firebaseConfig);
+</script>
+</body>
